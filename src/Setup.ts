@@ -1,86 +1,35 @@
-import { getListFile } from "./Common";
-import { Columns } from "./Constants";
+import { Columns, PropertyKeys } from "./Constants";
 
-function init() {
-  //設定用スプレッドシートの作成
-  // const file = SpreadsheetApp.create("小説家になろう更新通知リスト");
-  // //シートの初期化
-  // initAllUsersSheet(file);
-  //todo: スクリプトのプロパティの設定
-  // const properties = PropertiesService.getScriptProperties();
-  // properties.setProperty(PROPERTY_SPREADSHEET_FILE_ID, file.getId());
-}
+function initialize() {
+  const properties = PropertiesService.getScriptProperties();
 
-/**
- *
- * @param userId
- */
-export function addUser(userId: string) {
-    const file = getListFile();
-    const allUsersSheet = getAllUserSheet(file);
-}
+  const fileId = properties.getProperty(
+    PropertyKeys.PROPERTY_SPREADSHEET_FILE_ID
+  );
+  try {
+    //DriveApp.getFileById(fileId);
+    SpreadsheetApp.openById(fileId);
+  } catch {
+    const file = SpreadsheetApp.create("小説家になろう更新通知リスト");
+    properties.setProperty(
+      PropertyKeys.PROPERTY_SPREADSHEET_FILE_ID,
+      file.getId()
+    );
+    properties.setProperty(PropertyKeys.PROPERTY_LINE_CHANNEL_ACCESS_TOKEN, "");
 
-/**
- *
- * @param file
- */
-function getAllUserSheet(
-  file: GoogleAppsScript.Spreadsheet.Spreadsheet
-): GoogleAppsScript.Spreadsheet.Sheet {
-  let allUsersSheet = file.getSheetByName("All Users");
-  if (!allUsersSheet) {
-    allUsersSheet = initAllUsersSheet(file);
+    initSheet(file);
   }
-  return allUsersSheet;
-}
-
-/**
- * initialize All Users Sheet
- * @param {GoogleAppsScript.Spreadsheet.Spreadsheet} file
- */
-function initAllUsersSheet(
-  file: GoogleAppsScript.Spreadsheet.Spreadsheet
-): GoogleAppsScript.Spreadsheet.Sheet {
-  const sheet = file.insertSheet("All Users");
-
-  const headerRows = 1;
-  const bodyRows = 10;
-
-  //ヘッダー 行
-  const header = sheet.getRange(headerRows, 1, 1, 2);
-  const headerData = header.getValues();
-  headerData[0][0] = "ID";
-  headerData[0][1] = "Line User ID";
-  header.setValues(headerData);
-  header.setBorder(true, true, true, true, true, true);
-  header.setHorizontalAlignment("center");
-  header.setBackground("#c9daf8");
-  header.setFontWeight("bold");
-
-  //ボディー 行
-  const body = sheet.getRange(headerRows + 1, 1, bodyRows, 2);
-  body.setFontFamily("Courier New");
-  body.setBorder(true, true, true, true, true, true);
-
-  //行固定
-  sheet.setFrozenRows(1);
-
-  //列幅
-  sheet.setColumnWidth(1, 73);
-  sheet.setColumnWidth(2, 333);
-
-  return sheet;
 }
 
 /**
  * initialize sheet
  * @param {GoogleAppsScript.Spreadsheet.Sheet} sheet
  */
-function initUserSheet(
-  file: GoogleAppsScript.Spreadsheet.Spreadsheet,
-  userId: string
+function initSheet(
+  file: GoogleAppsScript.Spreadsheet.Spreadsheet
 ): GoogleAppsScript.Spreadsheet.Sheet {
-  const sheet = file.insertSheet(userId);
+  if (!file) return;
+  const sheet = file.getSheets()[0];
   const headerRows = 1;
   const bodyRows = 30;
 

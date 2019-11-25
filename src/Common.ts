@@ -21,21 +21,16 @@ export class Novel {
 }
 
 //--------------------------------------------------------------------------------------------
-export function getListFile(): GoogleAppsScript.Spreadsheet.Spreadsheet {
-  const fileId = PropertiesService.getScriptProperties().getProperty(
-    PropertyKeys.PROPERTY_SPREADSHEET_FILE_ID
-  );
-  const file = SpreadsheetApp.openById(fileId);
-  return file;
-}
-//--------------------------------------------------------------------------------------------
 /**
  * 更新通知設定用のシートを取得する
  *
  * @returns {GoogleAppsScript.Spreadsheet.Sheet}
  */
 export function getSheet(userId: string = "main"): GoogleAppsScript.Spreadsheet.Sheet {
-  const file = getListFile();
+  const fileId = PropertiesService.getScriptProperties().getProperty(
+    PropertyKeys.PROPERTY_SPREADSHEET_FILE_ID
+  );
+  const file = SpreadsheetApp.openById(fileId);
   const sheet = file.getSheets()[0];
   return sheet;
 }
