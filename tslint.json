@@ -1,0 +1,42 @@
+{
+    "defaultSeverity": "error",
+    "extends": [
+        "tslint:recommended"
+    ],
+    "linterOptions": {
+        "exclude": [
+            "node_modules/**/*.*"
+        ]
+    },
+    "jsRules": {},
+    "rules": {
+        "no-default-export": true,
+        "interface-name": false,
+        "ordered-imports": true,
+        "jsx-no-lambda": false,
+        "object-literal-sort-keys": false,
+        "prettier": true,
+
+        "comment-format":false,
+        "curly":false,
+        "whitespace": [
+            false,
+            "check-branch",
+            "check-decl",
+            "check-operator",
+            "check-module",
+            "check-separator",
+            "check-type",
+            "check-typecast"
+          ],
+          "no-trailing-whitespace": false,
+          "trailing-comma": false,
+          "no-namespace": false,
+          "no-console": false,
+          "one-line": false,
+          "max-classes-per-file":false,
+          "arrow-parens":false,
+          "object-literal-key-quotes":false
+    },
+    "rulesDirectory": []
+}
